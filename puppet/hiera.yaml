@@ -1,0 +1,8 @@
+---
+:backends: yaml
+:yaml:
+    :datadir: '/home/vagrant/project/puppet/hieradata'
+:hierarchy:
+    - php
+    - composer
+:logger: console

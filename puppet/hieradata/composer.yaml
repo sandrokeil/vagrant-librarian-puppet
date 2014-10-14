@@ -1,0 +1,6 @@
+---
+classes:
+  - composer
+
+composer::suhosin_enabled: false
+composer::download_method: wget

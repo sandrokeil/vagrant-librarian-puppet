@@ -1,0 +1,38 @@
+---
+classes:
+  - php
+  - php::cli
+
+# we use mayflower/php
+php::manage_repos: true
+php::cli         : true
+php::fpm         : false
+php::dev         : false
+php::composer    : false
+php::pear        : false
+php::phpunit     : false
+
+# configure php cli
+php::cli::settings:
+  Date/date.timezone: "Europe/Berlin"
+  PHP/display_errors: "On"
+  PHP/log_errors: "On"
+  PHP/display_startup_errors: "On"
+  PHP/error_reporting: "E_ALL | E_STRICT"
+
+# add php extensions
+php::extensions:
+  json: {}
+  mysql: {}
+  intl: {}
+  curl: {}
+  xdebug:
+    settings:
+      xdebug.default_enable: 1
+      xdebug.remote_enable: 1
+      xdebug.remote_handler: dbgp
+      xdebug.remote_host: 10.0.0.2
+      xdebug.remote_port: 9000
+      xdebug.remote_autostart: 0
+      xdebug.remote_connect_back: 1
+  memcached: {}
