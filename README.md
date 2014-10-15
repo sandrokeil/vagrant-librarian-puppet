@@ -21,7 +21,7 @@ Download this project and run `vagrant up` inside the extracted folder where `Va
 php and composer. Also php.ini and xdebug.ini will be configured for development.
 
 ## Documentation
-There is a `puppet` folder and a `Vagrantfile` file. You must copy this to you project and configure to your needs.
+There is a `puppet` folder and a [Vagrantfile](Vagrantfile) file. You must copy this to you project and configure to your needs.
 The files contains some comments to get a quick start of using vagrant and puppet.
 
 Please see docs for more information:
@@ -30,6 +30,9 @@ Please see docs for more information:
 * [Librarian Puppet](http://librarian-puppet.com/) (Installs puppet modules e.g. from forge.puppetlabs.com)
 * [Puppet](https://docs.puppetlabs.com/puppet/) (Puppet documentation)
 * [Puppet Forge](https://forge.puppetlabs.com/) (Puppet modules)
+
+### Vagrantfile
+Contains vagrant config example with nfs/rsync and more. Please read comments in file.
 
 ### Puppetfile
 Definitions of puppet modules which configures box. This is file is used by librarian puppet.
