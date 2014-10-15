@@ -56,7 +56,9 @@ A list of more puppet modules can be found under [Puppet Forge](https://forge.pu
 Depending on used puppet modules there can be some limitations on other guest os. The procedure is still the same, maybe
 only config may vary. Currently tested for debian wheezy.
 
+### Shell provisioner
+A [shell provisioner](provisioner/shell/debian.sh) is needed which does the following:
+
 1. Install puppet on guest os
 2. Install librarian-puppet on guest os
 3. Run librarian-puppet to load puppet modules
-4. Run puppet
