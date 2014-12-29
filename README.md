@@ -18,10 +18,10 @@ really host operating system independent and works on linux, windows and mac.
 
 ## Test
 Download this project and run `vagrant up` inside the extracted folder where `Vagrantfile` file is located. This installs
-php and composer. Also php.ini and xdebug.ini will be configured for development.
+PHP and Composer. Also php.ini and xdebug.ini will be configured for development.
 
 ## Documentation
-There is a `puppet` folder and a `Vagrantfile` file. You must copy this to you project and configure to your needs.
+There is a `puppet` folder and a [Vagrantfile](Vagrantfile) file. You must copy this to you project and configure to your needs.
 The files contains some comments to get a quick start of using vagrant and puppet.
 
 Please see docs for more information:
@@ -30,6 +30,9 @@ Please see docs for more information:
 * [Librarian Puppet](http://librarian-puppet.com/) (Installs puppet modules e.g. from forge.puppetlabs.com)
 * [Puppet](https://docs.puppetlabs.com/puppet/) (Puppet documentation)
 * [Puppet Forge](https://forge.puppetlabs.com/) (Puppet modules)
+
+### Vagrantfile
+Contains vagrant config example with nfs/rsync and more. Please read comments in file.
 
 ### Puppetfile
 Definitions of puppet modules which configures box. This is file is used by librarian puppet.
@@ -49,14 +52,18 @@ Puppet manifest file.
 ## Used puppet modules
 A list of more puppet modules can be found under [Puppet Forge](https://forge.puppetlabs.com/).
 
-* [mayflower/php](https://forge.puppetlabs.com/mayflower/php) - to install php
-* [tPl0ch/composer](https://forge.puppetlabs.com/tPl0ch/composer) - to install composer
+* [mayflower/php](https://forge.puppetlabs.com/mayflower/php) - to install PHP
+* [tPl0ch/composer](https://forge.puppetlabs.com/tPl0ch/composer) - to install Composer
+* [jfryman/nginx](https://forge.puppetlabs.com/jfryman/nginx) - to install nginx
 
 ## Limitations
-Depending on used puppet modules there can be some limitations on other guest os. The procedure is still the same, maybe
+Depending on used Puppet modules there can be some limitations on other guest os. The procedure is still the same, maybe
 only config may vary. Currently tested for debian wheezy.
 
-1. Install puppet on guest os
-2. Install librarian-puppet on guest os
-3. Run librarian-puppet to load puppet modules
-4. Run puppet
+### Shell provisioner
+[Shell provisioners](provisioner/shell) are needed which does the following:
+
+1. Install Ruby on guest OS
+1. Install puppet on guest OS
+2. Install librarian-puppet on guest OS
+3. Run librarian-puppet to load Puppet modules

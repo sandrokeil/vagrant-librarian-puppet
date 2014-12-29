@@ -1,7 +1,7 @@
 ---
 :backends: yaml
 :yaml:
-    :datadir: '/home/vagrant/project/puppet/hieradata'
+    :datadir: '/vagrant/puppet/hieradata'
 :hierarchy:
     - php
     - composer

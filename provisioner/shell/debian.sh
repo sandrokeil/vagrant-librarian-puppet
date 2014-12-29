@@ -1,9 +1,11 @@
-#!/usr/bin/env bash
+#!/bin/bash
+
+export DEBIAN_FRONTEND=noninteractive
 
 # configure puppet
 PUPPET_DIR=/etc/puppet/
-PUPPET_VERSION=3.7.1-1puppetlabs1
-LIBRARIAN_PUPPET_VERSION=1.3.2
+PUPPET_VERSION=3.7.3-1puppetlabs1
+LIBRARIAN_PUPPET_VERSION=2.0.1
 
 # No changes required after this line
 if [[ ! -d /.puphpet-stuff ]]; then
@@ -17,18 +19,26 @@ Pin: version ${PUPPET_VERSION}
 Pin-Priority: 501
 EOF
 
+if [[ ! -f /.puphpet-stuff/puppetlabs-repo ]]; then
+    puppet_release="puppetlabs-release-wheezy.deb"
+    wget -q http://apt.puppetlabs.com/${puppet_release}
+    dpkg -i $puppet_release
+    rm $puppet_release
+
+    touch /.puphpet-stuff/puppetlabs-repo
+fi
+
 echo "Running apt-get update"
 apt-get update --fix-missing >/dev/null
 echo "Finished running apt-get update"
 
+echo "Install puppet version $PUPPET_VERSION"
+apt-get install -y puppet=${PUPPET_VERSION} >/dev/null
+echo "Finished installing puppet"
+
 echo "Installing git"
 apt-get -q -y install git-core >/dev/null
 echo "Finished installing git"
-
-echo "Install puppet version $PUPPET_VERSION"
-apt-get install -q -y puppet >/dev/null
-PUPPET_VERSION=$(puppet help | grep 'Puppet v')
-echo "Finished installing puppet to version: $PUPPET_VERSION"
 
 if [[ ! -d "$PUPPET_DIR" ]]; then
     mkdir -p "$PUPPET_DIR"
@@ -37,16 +47,8 @@ fi
 
 ln -fs "/vagrant/puppet/Puppetfile" "$PUPPET_DIR/Puppetfile"
 
-if [[ ! -f /.puphpet-stuff/librarian-base-packages ]]; then
-    echo 'Installing base packages for librarian'
-    apt-get install -y build-essential ruby-dev >/dev/null
-    echo 'Finished installing base packages for librarian'
-
-    touch /.puphpet-stuff/librarian-base-packages
-fi
-
 if [[ ! -f /.puphpet-stuff/librarian-puppet-installed ]]; then
-    echo 'Installing librarian-puppet $LIBRARIAN_PUPPET_VERSION'
+    echo "Installing librarian-puppet $LIBRARIAN_PUPPET_VERSION"
     gem install librarian-puppet -v $LIBRARIAN_PUPPET_VERSION >/dev/null
     echo 'Finished installing librarian-puppet'
 

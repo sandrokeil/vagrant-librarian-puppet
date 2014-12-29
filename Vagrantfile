@@ -9,7 +9,7 @@ VIRTUAL_BOX_NAME = "puppetdemo"
 
 # nfs is disabled on windows automatically
 NFS_ENABLED = true
-NFS_MOUNT_OPTIONS  = ["proto=tcp", "vers=3", "actimeo=2"]
+NFS_MOUNT_OPTIONS  = ["proto=tcp", "vers=3", "actimeo=2", "nolock"]
 NFS_EXPORT_OPTIONS = ["async", "rw", "no_subtree_check", "all_squash"]
 
 # only change these lines if you know what you do
@@ -28,10 +28,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     config.vm.network :private_network, ip: "192.168.56.2", nic_type: "virtio"
 
     # rsync example
-    #config.vm.synced_folder ".", "/home/vagrant/project", type: "rsync", rsync__auto: true, rsync__exclude: [".git/", ".vagrant", ".idea"]
+    #config.vm.synced_folder ".", "/vagrant", type: "rsync", rsync__auto: true, rsync__exclude: [".git/", ".vagrant", ".idea"]
 
     # nfs example
-    config.vm.synced_folder ".", "/home/vagrant/project", :nfs => nfs_enabled, :mount_options => mount_options, :linux__nfs_options =>  export_options
+    config.vm.synced_folder ".", "/vagrant", :nfs => nfs_enabled, :mount_options => mount_options, :linux__nfs_options =>  export_options
 
     # forward ssh requests for public keys
     config.ssh.forward_agent = true
@@ -43,10 +43,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     # configure virtual box
     config.vm.provider :virtualbox do |vb|
         vb.name = VIRTUAL_BOX_NAME
+        # vb.gui = true
         vb.customize ["modifyvm", :id, "--memory", VAGRANT_BOX_MEMORY]
     end
 
     # script for installing puppet, librarian-puppet and load puppet dependencies
+    config.vm.provision :shell, :path => "https://raw.githubusercontent.com/sandrokeil/vagrant-librarian-puppet/master/provisioner/shell/install-ruby.sh"
     config.vm.provision :shell, :path => "https://raw.githubusercontent.com/sandrokeil/vagrant-librarian-puppet/master/provisioner/shell/debian.sh"
 
     # puppet provisioner
@@ -54,8 +56,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         puppet.facter = {
             "ssh_username" => "vagrant"
         }
-        puppet.manifests_path = ["puppet/manifests", "/home/vagrant/project/puppet/manifests"]
+        puppet.manifests_path = ["puppet/manifests", "/vagrant/puppet/manifests"]
         puppet.manifest_file = "site.pp"
-        puppet.options = ["--verbose", "--debug", "--hiera_config /home/vagrant/project/puppet/hiera.yaml", "--parser future"]
+        puppet.options = ["--verbose", "--debug", "--hiera_config /vagrant/puppet/hiera.yaml", "--parser future"]
     end
 end
